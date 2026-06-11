@@ -1,0 +1,210 @@
+const questions = [
+    {
+        question: "Qual das seguintes práticas agrícolas ajuda a preservar o solo e a reter água de forma sustentável?",
+        options: [
+            "Plantio Direto na palha",
+            "Queimada controlada anual",
+            "Uso intensivo de arado mecânico",
+            "Monocultura contínua"
+        ],
+        answer: 0
+    },
+    {
+        question: "O uso de drones e sensores no campo para aplicar insumos apenas onde é necessário chama-se:",
+        options: [
+            "Agricultura Tradicional",
+            "Agricultura de Precisão",
+            "Subsistência Digital",
+            "Mecanização Forçada"
+        ],
+        answer: 1
+    },
+    {
+        question: "Como o setor agropecuário pode contribuir diretamente para a redução dos gases de efeito estufa?",
+        options: [
+            "Expandindo áreas cultivadas sem critério",
+            "Utilizando a integração Lavoura-Pecuária-Floresta (ILPF)",
+            "Aumentando o uso de combustíveis fósseis nos tratores",
+            "Eliminando as áreas de Preservação Permanente (APPs)"
+        ],
+        answer: 1
+    },
+    {
+        question: "O que são os bioinsumos na agricultura sustentável?",
+        options: [
+            "Produtos puramente sintéticos e químicos",
+            "Defensivos e fertilizantes de origem biológica ou natural",
+            "Ferramentas digitais para monitorar o clima",
+            "Sementes modificadas para resistirem à falta de água"
+        ],
+        answer: 1
+    },
+    {
+        question: "Qual é o principal objetivo do equilíbrio entre produção e meio ambiente?",
+        options: [
+            "Garantir alimentos para o futuro sem esgotar os recursos naturais hoje",
+            "Parar completamente a produção agrícola para salvar as florestas",
+            "Focar apenas no lucro financeiro imediato do produtor",
+            "Substituir toda a fauna local por plantações comerciais"
+        ],
+        answer: 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timerInterval;
+const timeLeftMax = 15;
+let timeLeft = timeLeftMax;
+
+// Seletores
+const startScreen = document.getElementById('start-screen');
+const quizScreen = document.getElementById('quiz-screen');
+const resultScreen = document.getElementById('result-screen');
+const startBtn = document.getElementById('start-btn');
+const nextBtn = document.getElementById('next-btn');
+const restartBtn = document.getElementById('restart-btn');
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const progressText = document.getElementById('progress');
+const progressBar = document.getElementById('progress-bar');
+const timeLeftText = document.getElementById('time-left');
+const robotText = document.getElementById('robot-text');
+const correctAnswersText = document.getElementById('correct-answers');
+const totalQuestionsText = document.getElementById('total-questions');
+const finalScoreText = document.getElementById('final-score');
+const feedbackMessage = document.getElementById('feedback-message');
+
+// Frases dinâmicas que o robô vai falar durante o jogo
+const robotPhrases = [
+    "Pense com cuidado! O meio ambiente depende dessa resposta.",
+    "Tecnologia e natureza andam juntas! Sabe a resposta?",
+    "Essa é fácil para quem estuda o campo de forma sustentável!",
+    "Os bioinsumos e o solo vivo são super importantes, lembre-se!",
+    "Última pergunta! Dê o seu melhor pela nossa sustentabilidade!"
+];
+
+startBtn.addEventListener('click', startQuiz);
+nextBtn.addEventListener('click', () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+    } else {
+        showResults();
+    }
+});
+restartBtn.addEventListener('click', startQuiz);
+
+function startQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    switchScreen(quizScreen);
+    showQuestion();
+}
+
+function switchScreen(screenToShow) {
+    [startScreen, quizScreen, resultScreen].forEach(screen => screen.classList.remove('active'));
+    screenToShow.classList.add('active');
+}
+
+function showQuestion() {
+    nextBtn.classList.add('hidden');
+    optionsContainer.innerHTML = '';
+    timeLeft = timeLeftMax;
+    timeLeftText.textContent = timeLeft;
+    
+    // Atualiza a fala do robô baseado na pergunta atual
+    robotText.textContent = robotPhrases[currentQuestionIndex];
+    
+    const currentQuestion = questions[currentQuestionIndex];
+    questionText.textContent = currentQuestion.question;
+    
+    progressText.textContent = `Pergunta ${currentQuestionIndex + 1} de ${questions.length}`;
+    progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+
+    currentQuestion.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.classList.add('option-btn');
+        button.addEventListener('click', () => selectOption(index));
+        optionsContainer.appendChild(button);
+    });
+
+    clearInterval(timerInterval);
+    startTimer();
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timeLeftText.textContent = timeLeft;
+        if (timeLeft <= 5 && timeLeft > 0) {
+            robotText.textContent = "O tempo está acabando! Corre! ⏱️";
+        }
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            autoTimeOut();
+        }
+    }, 1000);
+}
+
+function selectOption(selectedIndex) {
+    clearInterval(timerInterval);
+    const currentQuestion = questions[currentQuestionIndex];
+    const buttons = optionsContainer.querySelectorAll('.option-btn');
+
+    buttons.forEach((button, index) => {
+        button.disabled = true;
+        if (index === currentQuestion.answer) {
+            button.classList.add('correct');
+        }
+        if (index === selectedIndex && selectedIndex !== currentQuestion.answer) {
+            button.classList.add('wrong');
+        }
+    });
+
+    if (selectedIndex === currentQuestion.answer) {
+        score++;
+        robotText.textContent = "Muito bem! Resposta exata! 🌱";
+    } else {
+        robotText.textContent = "Ah, não foi dessa vez. Mas errando também se aprende! 🌍";
+    }
+
+    nextBtn.classList.remove('hidden');
+}
+
+function autoTimeOut() {
+    const currentQuestion = questions[currentQuestionIndex];
+    const buttons = optionsContainer.querySelectorAll('.option-btn');
+    
+    buttons.forEach(button => {
+        button.disabled = true;
+        if (buttons[currentQuestion.answer] === button) {
+            button.classList.add('correct');
+        }
+    });
+    robotText.textContent = "O tempo acabou! Vamos ver qual era a certa... ⏳";
+    nextBtn.classList.remove('hidden');
+}
+
+function showResults() {
+    clearInterval(timerInterval);
+    switchScreen(resultScreen);
+    
+    correctAnswersText.textContent = score;
+    totalQuestionsText.textContent = questions.length;
+    
+    const percentage = Math.round((score / questions.length) * 100);
+    finalScoreText.textContent = `${percentage}%`;
+
+    if (percentage === 100) {
+        feedbackMessage.textContent = "Incrível! Você é um mestre da sustentabilidade no campo!";
+        robotText.textContent = "Sensacional! Nota 10! Nosso futuro sustentável está garantido com você! 🤖✨";
+    } else if (percentage >= 60) {
+        feedbackMessage.textContent = "Muito bem! Você entende a importância do equilíbrio entre produzir e preservar.";
+        robotText.textContent = "Belo resultado! Você provou que entende bastante sobre o nosso ecossistema! 🌾";
+    } else {
+        feedbackMessage.textContent = "Bom esforço! Que tal revisar os conceitos de sustentabilidade e tentar de novo?";
+        robotText.textContent = "Valeu a tentativa! Que tal tentarmos mais uma vez para subir essa pontuação? ⚡";
+    }
+}
