@@ -1,0 +1,271 @@
+:root {
+    --primary-pink: #ffb7c5;    /* Rosa Claro Principal */
+    --dark-pink: #d87093;       /* Rosa Escuro para botões/destaques */
+    --light-pink: #fff0f5;      /* Rosa Lavanda bem clarinho para fundos */
+    --primary-green: #2e7d32;   /* Verde mantido para acertos e natureza */
+    --text-color: #4a3b32;      /* Marrom escuro suave para o texto */
+    --white: #ffffff;
+    --correct-color: #66bb6a;
+    --wrong-color: #ef5350;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--light-pink);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Layout em duas colunas para o Robô + Quiz */
+.main-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-end;
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* CONTAINER DO ROBÔ */
+.character-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.robot-img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--primary-pink);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.speech-bubble {
+    position: relative;
+    background: var(--white);
+    border: 3px solid var(--primary-pink);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.speech-bubble p {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+    color: var(--text-color);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Setinha do balão de fala */
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 15px 15px 0;
+    border-style: solid;
+    border-color: var(--white) transparent;
+    display: block;
+    width: 0;
+}
+
+.speech-bubble:before {
+    content: '';
+    position: absolute;
+    bottom: -19px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 16px 16px 0;
+    border-style: solid;
+    border-color: var(--primary-pink) transparent;
+    display: block;
+    width: 0;
+}
+
+/* CONTAINER DO QUIZ */
+.quiz-container {
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(216, 112, 147, 0.15);
+    border: 2px solid rgba(255, 183, 197, 0.4);
+    flex-grow: 1;
+    padding: 30px;
+    overflow: hidden;
+}
+
+.quiz-banner-img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.screen.active {
+    display: flex;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    color: var(--dark-pink);
+    margin-bottom: 8px;
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+h3 {
+    color: var(--text-color);
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: var(--dark-pink);
+    color: var(--white);
+    border: none;
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(216, 112, 147, 0.3);
+}
+
+.btn:hover {
+    background-color: #b85474;
+    transform: translateY(-2px);
+}
+
+/* Área de jogo */
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--dark-pink);
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+#question-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.option-btn {
+    background-color: var(--white);
+    border: 2px solid var(--primary-pink);
+    padding: 14px;
+    text-align: left;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.option-btn:hover:not([disabled]) {
+    background-color: var(--light-pink);
+    border-color: var(--dark-pink);
+}
+
+.option-btn.correct {
+    background-color: #e8f5e9;
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+.option-btn.wrong {
+    background-color: #ffebee;
+    border-color: var(--wrong-color);
+    color: var(--wrong-color);
+}
+
+.hidden {
+    display: none;
+}
+
+#final-score {
+    font-size: 3rem;
+    color: var(--dark-pink);
+}
+
+/* Responsividade Básica (Tela menor empilha o robô em cima) */
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+    .character-container {
+        width: 100%;
+    }
+    .speech-bubble:after, .speech-bubble:before {
+        display: none; /* Remove setinha no mobile se preferir */
+    }
+}
