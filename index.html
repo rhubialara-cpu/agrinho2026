@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Agrinho - Agro Forte, Futuro Sustentável</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-layout">
+        
+        <div class="character-container">
+            <div class="speech-bubble">
+                <p id="robot-text">Olá, cientista do futuro! Vamos testar seus conhecimentos sobre o Agro Sustentável? Clique abaixo!</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=300" alt="Robô Ajudante" class="robot-img">
+        </div>
+
+        <div class="quiz-container">
+            <div id="start-screen" class="screen active">
+                <h1>Quiz Agrinho 2026</h1>
+                <h2>Agro forte, futuro sustentável: equilíbrio entre produção e meio ambiente</h2>
+                
+                <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&q=80&w=500" alt="Agro Sustentável" class="quiz-banner-img">
+                
+                <p>Prepare-se para testar seus conhecimentos sobre a agricultura moderna, tecnologia no campo e preservação ambiental!</p>
+                <button id="start-btn" class="btn">Iniciar Quiz</button>
+            </div>
+
+            <div id="quiz-screen" class="screen">
+                <div class="quiz-header">
+                    <span id="progress">Pergunta 1 de 5</span>
+                    <div id="timer">Tempo: <span id="time-left">15</span>s</div>
+                </div>
+                
+                <div class="progress-bar-container">
+                    <div id="progress-bar"></div>
+                </div>
+
+                <h3 id="question-text">Texto da Pergunta aqui?</h3>
+                
+                <div id="options-container" class="options-grid">
+                    </div>
+
+                <button id="next-btn" class="btn hidden">Próxima Pergunta</button>
+            </div>
+
+            <div id="result-screen" class="screen">
+                <h2>Quiz Concluído!</h2>
+                
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=500" alt="Natureza Preservada" class="quiz-banner-img">
+
+                <div class="score-container">
+                    <p>Você acertou <span id="correct-answers">0</span> de <span id="total-questions">5</span> perguntas.</p>
+                    <h1 id="final-score">0%</h1>
+                </div>
+                <p id="feedback-message">Mensagem de feedback aqui.</p>
+                <button id="restart-btn" class="btn">Jogar Novamente</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
